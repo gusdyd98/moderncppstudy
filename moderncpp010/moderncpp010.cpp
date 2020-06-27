@@ -7,12 +7,12 @@
 
 using namespace std;
 
-unsigned long long find_max_bit(unsigned long long n)
+int find_max_bit(int n)
 {
     int i = 0;
     int nTmpNum = 0;
     int nMaxJisu = 0;
-    unsigned long long ret = 0;
+    int ret = 0;
 
     nTmpNum = n;
     while (nTmpNum >= 1)
@@ -22,21 +22,26 @@ unsigned long long find_max_bit(unsigned long long n)
         nTmpNum = (int) (nTmpNum / 2);
     }
 
-    ret = (unsigned long long) nTmpNum;
+    ret = (int) nMaxJisu;
 
     return ret;
 }
 
-std::vector<unsigned long long> binary_factors(unsigned long long n)
+std::vector<int> binary_factors(int n)
 {
-    std::vector<unsigned long long> factors;
+    std::vector<int> factors;
+
+	cout << "find_max_bit : " << find_max_bit(n) << endl;
+
+    factors.reserve(find_max_bit(n));
 
     int bi_Num;
     for (int i = 0; i < find_max_bit(n) ; i++)
     {
-        bi_Num = nNum >> i & 0x1;
+        bi_Num = n >> i & 0x1;
         cout << bi_Num;
         factors.push_back(bi_Num);
+        cout << " : size : " << factors.size() << endl;
     }
 
     return factors;
@@ -56,25 +61,75 @@ int main()
         cin >> nNum;
     }
 
-    int bi_Num;
-    int gray_Num;
 
-	auto factors = binary_factors(nNum);
+    auto factors = binary_factors(nNum);
 
-	cout << "입력한 수 " << nNum << " 의 이진수 = ";
-    for (int i = 0; i < 5; i++)
+    cout << "factors.size() = " << factors.size() << endl;
+
+    cout << "입력한 수 " << nNum << " 의 이진수 = ";
+
+//    for (auto it = factors.begin(); it != factors.end(); ++it)
+//        cout << ' ' << *it;
+//    cout << endl;
+
+    vector<int>::size_type iter;
+    for (iter = factors.size() - 1; (int)iter >= 0; iter--)
     {
-        cout << (nNum >> i & 0x1);
+        cout << factors[iter] << " ";
     }
-    cout << "\n";
+    cout << endl;
 
 
-	cout << "입력한 수 " << nNum << " 의 그레이코드 = ";
-    for (int i = 0; i < 5; i++)
-        cout << (nNum >> i & 0x1);
-    cout << "\n";
-        
-    std::cout << "Hello World!\n";
+    cout << "입력한 수 " << nNum << " 의 그레이코드 = ";
+
+    vector<int> gray_factors;
+
+    for (iter = factors.size() - 1; (int)iter >= 0; iter--)
+    {
+        if (iter == factors.size() - 1)
+        {
+            gray_factors.push_back(factors[iter]);
+            cout << factors[iter] << " ";
+        }
+        if (iter < factors.size() - 1)
+        {
+            gray_factors.push_back(factors[iter + 1] ^ factors[iter]);
+            cout << (factors[iter + 1] ^ factors[iter]);
+        }
+    }
+    cout << endl;
+
+    for (iter = 0 ; iter < gray_factors.size() ; iter++)
+    {
+        cout << gray_factors[iter] << " ";
+    }
+    cout << endl;
+
+    cout << "입력한 수 " << nNum << " 의 그레이코드 복호화 = ";
+
+    vector<int> gray_to_bin_factors;
+
+    for (iter = 0;  iter < gray_factors.size(); iter++)
+    {
+        if (iter == 0 )
+        {
+            gray_to_bin_factors.push_back(gray_factors[iter]);
+            cout << gray_factors[iter] << " ";
+        }
+        if (iter > 0 && iter < gray_factors.size() )
+        {
+            gray_to_bin_factors.push_back(gray_to_bin_factors.back() ^ gray_factors[iter]);
+            cout << (gray_to_bin_factors.back());
+        }
+    }
+    cout << endl;
+
+    for (iter = 0 ; iter < gray_to_bin_factors.size(); iter++)
+    {
+        cout << gray_to_bin_factors[iter] << " ";
+    }
+    cout << endl;
+
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
