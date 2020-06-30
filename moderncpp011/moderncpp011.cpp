@@ -1,14 +1,60 @@
 ﻿// moderncpp011.cpp : 로마 숫자 표기법 변환 프로그램 구현하기
 //                  : 사용자가 입력한 수를 로마 표기법으로 출력하는 프로그램을 작성하라
 //     * 로마표기법?  IV, X, XI???
-//
+//    1 : I       11 : XI      21 : XXI        31 : XXXI        41 : XLI          90 : XC
+//    2 : II      12 : XII     22 : XXII       32 : XXXII       42 : XLII        100 : C
+//    3 : III     13 : XIII    23 : XXIII      33 : XXXIII      43 : XLIII       500 : D
+//    4 : IV      14 : XIV     24 : XXIV       34 : XXXIV       44 : XLIV       1000 : M
+//    5 : V       15 : XV      25 : XXV        35 : XXXV        45 : XLV
+//    6 : VI      16 : XVI     26 : XXVI       36 : XXXVI       46 : XLVI
+//    7 : VII     17 : XVII    27 : XXVII      37 : XXXVII      47 : XLVII
+//    8 : VIII    18 : XVIII   28 : XXVIII     38 : XXXVIII     48 : XLVIII
+//    9 : IX      19 : XIX     29 : XXIX       39 : XXXIX       49 : XLIX
+//   10 : X       20 : XX      30 : XXX        40 : XL          50 : L  
 
 #include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+std::string to_roman(unsigned int value)
+{
+    std::vector<std::pair<unsigned int, char const*>> roman{
+        {1000, "M"}, {900, "CM"}, {500, "D"}, {400,"CD"},
+        {100, "C"}, {90, "XC"}, {50,"L"}, {40, "XL"},
+        {10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"}, {1, "I"} };
+
+    std::string result;
+
+    for (auto const& kvp : roman) {
+        cout << "check...1" << endl;
+        while (value >= kvp.first) {
+            cout << "check...2" << endl;
+            result += kvp.second;
+            value -= kvp.first;
+        }
+    }
+
+    return result;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+
+    for (int i = 1; i <= 100; i++)
+    {
+        std::cout << i << "\t" << to_roman(i) << std::endl;
+    }
+
+    int number = 0;
+    std::cout << "number :";
+    std::cin >> number;
+    std::cout << to_roman(number) << std::endl;
 }
+
+
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
 // 프로그램 디버그: <F5> 키 또는 [디버그] > [디버깅 시작] 메뉴
